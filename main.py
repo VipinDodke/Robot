@@ -1,5 +1,6 @@
 import speech_recognition as sr
 import pyttsx3
+import datetime
 import pywhatkit
 listener= sr.Recognizer()
 engine = pyttsx3.init()
@@ -15,13 +16,11 @@ def talk(text):
         text=text.replace('sara','')
         voices = engine.getProperty('voices')
         engine.setProperty('voice', voices[1].id)
-
         engine.say(text)
     elif "lucifer" in text:
         text = text.replace('lucifer', '')
         voices = engine.getProperty('voices')
         engine.setProperty('voice', voices[0].id)
-
         engine.say(text)
     engine.runAndWait()
 def take_command():
@@ -30,7 +29,6 @@ def take_command():
         listener.adjust_for_ambient_noise(source,duration=1)
         # r.energy_threshold()
         print("say anything : ")
-
         try:
             audio = listener.listen(source)
             commend= listener.recognize_google(audio)
@@ -47,5 +45,11 @@ def run_AI():
         command = command.replace('play', '')
         pywhatkit.playonyt(command)
         talk('playing '+command)
-
+    elif 'time' in command:
+        time = datetime.datetime.now().strftime('%I:%M %p')
+        print(time)
+        if 'sara' in command:
+            talk('Time is sara'+time)
+        elif 'lucifer' in command:
+            talk('Time is lucifer'+time)
 run_AI()
